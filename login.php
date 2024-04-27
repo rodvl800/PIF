@@ -14,40 +14,45 @@
 include 'nav-bar.php';
 $errors_login = array();
 
-
 if (isset($_SESSION["UserLoggedIn"])) {
 //pass
 } else {
 	$_SESSION["UserLoggedIn"] = false;
 }
 
-
 if (!$_SESSION["UserLoggedIn"]) {
 	?>
+    <h1>Here you can Log In</h1>
 	<form method="POST" class="registration" id="registration-form">
-		<label><?php echo callLocalisation($language, 11);?>
-			<input type="text" name="username">
-		</label><br>
-		<label><?php echo callLocalisation($language, 12);?>
-			<input type="password" name="password">
-		</label><label></label><br>
-			<button type="submit" value="Login" name="Login"><?php echo callLocalisation($language, 13);?></button>
+        <div>
+            <label for="UserName">Username</label>
+            <input type="text" name="UserName" id="UserName" required>
+        </div>
+        <div>
+
+            <label for="UserName">Password</label>
+            <input type="text" name="Password" id="Password" required>
+        </div>
+        <div class="register-button">
+			<button type="submit" value="Login" name="Login">Login</button>
+        </div>
 	</form>
+
 <?php
 }
 else if ($_SESSION["UserLoggedIn"] && $_SESSION["isAdmin"]) {
 	header('location: admin.php?page=admin');
 }
 else {
-	header('location: cart.php?page=cart');
+	header('location: qr.php?page=qr');
 }
 
 if (isset($_POST["Login"])) {
 		// Fetch and validate user inputs
-		$username = mysqli_real_escape_string($db, $_POST['username']);
-		$password = mysqli_real_escape_string($db, $_POST['password']);
+		$username = mysqli_real_escape_string($db, $_POST['UserName']);
+		$password = mysqli_real_escape_string($db, $_POST['Password']);
 
-		$query = "SELECT * FROM users WHERE username = ?";
+		$query = "SELECT * FROM Users WHERE Username = ?";
 		$stmt = mysqli_prepare($db, $query);
 		mysqli_stmt_bind_param($stmt, "s", $username);
 		mysqli_stmt_execute($stmt);
@@ -55,7 +60,7 @@ if (isset($_POST["Login"])) {
 		$result = mysqli_stmt_get_result($stmt);
 
 		if ($user_data_row = mysqli_fetch_assoc($result)) {
-				if (password_verify($password, $user_data_row['password_hash'])) {
+				if (password_verify($password, $user_data_row['PasswordHash'])) {
 						$_SESSION["UserLoggedIn"] = true;
 						$_SESSION["username"] = $username;
 						if ($user_data_row["isAdmin"]) {
@@ -64,7 +69,7 @@ if (isset($_POST["Login"])) {
 						}
 						else {
 							$_SESSION["isAdmin"] = false;
-							header('location: cart.php?page=cart'); // Successful login
+							header('location: qr.php?page=qr'); // Successful login
 						}						
 						exit();
 				} else {

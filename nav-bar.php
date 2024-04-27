@@ -23,13 +23,19 @@ if (isset($_POST["Logout"])) {
             <li><a href="index.php">Home</a></li>
             <li><a href="recycling-centers.php">Centers</a></li>
             <li><a href="about.php">About</a></li>
-            <?php if(isset($_SESSION['username'])): ?>
-            <li>Welcome, <?php echo $_SESSION['username']; ?>! <a href="logout.php">Logout</a></li>
-             <?php else: ?>
-                <li><a href="../login.php">Login</a></li> <li><a href="../register.php">Register</a></li>
-            <?php endif; ?>
-            <?php if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin']): ?>
+            <?php
+            if ($_SESSION["UserLoggedIn"]) {?>
+                <li><a class="<?php echo $pageQr;?>" href="qr.php?page=qr">Qr</a></li>
+                <p>You are logged in as <b><?php echo $_SESSION["username"]?></b></p>
+                <form method="POST" >
+                <li><input type="submit" name="Logout" value="Logout"></li>
+                </form>
+            <?php }
+                else { ?>
+                <li><a href="login.php">Login</a></li> <li><a href="register.php">Register</a></li>
+            <?php } ?>
+            <?php if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin']){ ?>
                 <li><a href="admin.php">Admin</a></li>
-            <?php endif; ?>
+            <?php } ?>
     </ul>
 </header>

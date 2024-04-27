@@ -38,7 +38,7 @@ main {
 	list-style: none;
 }
 
-.nav-links a {
+.nav-links a, input {
 	color: black;
 	text-decoration: none;
 	letter-spacing: 3px;
@@ -70,4 +70,14 @@ main {
 		opacity: 1;
 		transform: translateY(0);
 	}
+}
+
+.registration label {
+		display: inline-block;
+		width: 130px;
+		text-align: center;
+}
+
+.register-button {
+	padding-left: 135px;
 }

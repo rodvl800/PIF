@@ -26,6 +26,7 @@ if(isset($_SESSION['user_id'])) {
     <h1>Welcome to LPEM Recycling Centers</h1>
     <div class="center-details">
         <h2>Random center Details:</h2>
+        <h3><?php echo $random_center['CenterName']; ?></h3>
         <p><?php echo $random_center['CenterCode']; ?></p>
         <p><?php echo $random_center['Address']; ?></p>
         <p><?php echo $random_center['Open']; ?></p>

@@ -12,46 +12,58 @@
 <body>
 <?php
 include 'nav-bar.php';
+if ($_SESSION["UserLoggedIn"]) {
+    header('location: qr.php');
+}
 ?>
 
-<!-- 
+<H1>Here you can Sign In</H1>
 <form method="POST" class="registration" id="registration-form">
 	<div>
-		<label for="UserName"></label>
+		<label for="Name">Name</label>
+		<input type="text" name="Name" id="Name" required>
+	</div>
+    <div>
+
+		<label for="UserName">Username</label>
 		<input type="text" name="UserName" id="UserName" required>
 	</div>
+    <div>
+        <label for="Email">Email</label>
+        <input type="text" name="Email" id="Email" required>
+    </div>
 	<div>
-		<label for="Password"></label>
+		<label for="Password">Password</label>
 		<input type="password" name="Password" id="Password" required>
 	</div>
 	<div>
-		<label for="PasswordAgain"></label>
+		<label for="PasswordAgain">Repeat Password</label>
 		<input type="password" name="PasswordAgain" id="PasswordAgain" required>
 	</div>
 	<div>
-		<label for="Country"></label>
-		<select name="Country" id="Country" required>
-			<option value="Luxembourg">Luxembourg</option>
-			<option value="France">France</option>
-			<option value="Germany">Germany</option>
-			<option value="UK">UK</option>
-			<option value="Romania">Romania</option>
+		<label for="Center">Favorite Center</label>
+		<select name="Center" id="Center" required>
+			<option value="Luxembourg-City">Luxembourg-City</option>
+			<option value="Luxembourg-Gare">Luxembourg-Gare</option>
+			<option value="Esch">Esch</option>
 		</select>
 	</div>
-	<div>
-		<button type="submit" name="submit">>
+	<div class="register-button">
+		<button type="submit" name="submit">Register
 	</div>
 	<p class="error-message" id="error-message"></p>
-</form> -->
+</form>
 
 <?php
-/*
+
 $errors = array(); //Array to push and display errors to the user
-if (isset($_POST['submit'])) {
+if (isset($_POST["submit"])) {
+    $Name = mysqli_real_escape_string($db, $_POST['Name']);
     $UserName = mysqli_real_escape_string($db, $_POST['UserName']);
+    $Email = mysqli_real_escape_string($db, $_POST['Email']);
     $Password = mysqli_real_escape_string($db, $_POST['Password']);
     $PasswordAgain = mysqli_real_escape_string($db, $_POST['PasswordAgain']);
-		$Country = mysqli_real_escape_string($db, $_POST['Country']);
+    $Center = mysqli_real_escape_string($db, $_POST['Center']);
     //checking if the passwords entered in both fields are same or not
     if($Password != $PasswordAgain)
     {
@@ -59,33 +71,42 @@ if (isset($_POST['submit'])) {
     }
 
 	//checking if the username is already taken
-	$user_check_query = "SELECT * FROM users WHERE username='$UserName' LIMIT 1";
+	$user_check_query = "SELECT * FROM users WHERE Username='$UserName' LIMIT 1";
 	$result = mysqli_query($db, $user_check_query);
 	$user = mysqli_fetch_assoc($result);
-	if ($user) { // if user exists
-		if ($user['username'] === $UserName) {
+		if ($user["Username"] === $UserName) {
 			array_push($errors, "Username already exists.");
 		}
-	}
+
     //register the user if there are no errors
     if (count($errors) == 0) {
         //encrypting the password
-        $password = password_hash($Password, PASSWORD_DEFAULT);
+        $PasswordHashed = password_hash($Password, PASSWORD_DEFAULT);
+        //Get center id by it's name selected by user.
+        $centerCodeQuery = "SELECT CenterCode FROM RecyclingCenter WHERE CenterName='$Center' LIMIT 1";
+        $resultCenter = mysqli_query($db, $centerCodeQuery);
+        $FavouriteCenterArray = mysqli_fetch_assoc($resultCenter);
+        $FavouriteCenter = $FavouriteCenterArray["CenterCode"];
         //finally registering the user
-        $query = "INSERT INTO users (username, password_hash, country) VALUES ('$UserName', '$password', '$Country')";
+        $query = "INSERT INTO Users (Username, Name, PasswordHash, RecCenterCode) VALUES ('$UserName', '$Name', '$PasswordHashed', '$FavouriteCenter')";
         mysqli_query($db, $query);
         //checking if the user has been successfully registered by fetching in their details associated with the email
-        $query = "SELECT * FROM users WHERE username = '$UserName'";
+        $query = "SELECT * FROM Users WHERE Username = '$UserName'";
 				$results = mysqli_query($db, $query);
+                $UserData = mysqli_fetch_assoc($results);
             if ($results) {
-                //logging in and sending user to the user cart page
+                //Check maybe the user is Admin
+                if ($UserData["IsAdmin"] == 1){
+                    $_SESSION["IsAdmin"] = true;
+                }
+                //logging in and sending user to his qr page
                 $_SESSION["UserLoggedIn"] = true;
                 $_SESSION["username"] = $UserName;
-                header('location: cart.php?page=cart');
+                header('location: qr.php');
             }
-						else {
-							echo "test";
-						}
+            else{
+                array_push($errors, "Problem with database.");
+            }
     }
 }
 if (!empty($errors)): ?>
@@ -98,8 +119,6 @@ if (!empty($errors)): ?>
 	</ul>
 </h3>
 <?php endif; ?>
-*/
 
-?>
 </body>
 </html>
