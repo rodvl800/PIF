@@ -1,5 +1,5 @@
 <?php
-session_start();
+@session_start();
 require_once 'dbconfig.php'; // Database connection used everywhere after
 $_SESSION["UserLoggedIn"] = $_SESSION["UserLoggedIn"] ?? false;
 var_dump($_SESSION);
