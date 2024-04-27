@@ -5,7 +5,6 @@
 .devcontainer/Dockerfile
 .devcontainer/docker-compose.yml
 .devcontainer/devcontainer.json
-styles.css
 RUN.txt
 .idea/php.xml
 .idea/php.xml

@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `Pif`
+-- Database: `PIF`
 --
 
 -- --------------------------------------------------------
@@ -85,7 +85,7 @@ CREATE TABLE `Station` (
 -- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE `Users` (
   `Username` varchar(255) NOT NULL,
   `Name` varchar(255) NOT NULL,
   `Email` varchar(255) NOT NULL,
