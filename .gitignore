@@ -1,0 +1,11 @@
+.vscode/settings.json
+.idea/vcs.xml
+.idea/php.xml
+.github/dependabot.yml
+.devcontainer/Dockerfile
+.devcontainer/docker-compose.yml
+.devcontainer/devcontainer.json
+styles.css
+RUN.txt
+.idea/php.xml
+.idea/php.xml
