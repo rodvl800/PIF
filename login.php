@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en">
+    <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="master.css" />
-    <link rel="icon" type="image/png" href="photos/logo.png">
+    <link rel="icon" type="image/png" href="logo.png">
     <title>Login</title>
 </head>
 <body>
@@ -63,7 +63,7 @@ if (isset($_POST["Login"])) {
 				if (password_verify($password, $user_data_row['PasswordHash'])) {
 						$_SESSION["UserLoggedIn"] = true;
 						$_SESSION["username"] = $username;
-						if ($user_data_row["isAdmin"]) {
+						if ($user_data_row["IsAdmin"] == 1) {
 							$_SESSION["isAdmin"] = true;
 							header('location: admin.php?page=admin'); // Successful login as admin
 						}

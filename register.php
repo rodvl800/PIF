@@ -5,8 +5,8 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" type="image/png" href="logo.png">
     <!-- <link rel="stylesheet" href="styles.css"/> -->
-    <link rel="icon" type="image/png" href="photos/logo.png">
     <title>Register</title>
 </head>
 <body>
@@ -64,21 +64,49 @@ if (isset($_POST["submit"])) {
     $Password = mysqli_real_escape_string($db, $_POST['Password']);
     $PasswordAgain = mysqli_real_escape_string($db, $_POST['PasswordAgain']);
     $Center = mysqli_real_escape_string($db, $_POST['Center']);
-    //checking if the passwords entered in both fields are same or not
+
+    //Make sure required fields are filled in
+    if (empty($Name) || empty($UserName) || empty($Password) || empty($Email) || empty($Center)) {
+        array_push($errors, "Fill in all the fields.");
+    }
+
+    // Name can only contain letters.
+    if (!preg_match("/^[A-Za-z]+$/", $Name)) {
+        array_push($errors, "Name can only contain letters.");
+    }
+
+    // Username can only contain letters, numbers, and underscores
+    if (!preg_match("/^[a-zA-Z0-9_]+$/", $UserName)) {
+        array_push($errors, "Username can only contain letters, numbers, and underscores.");
+    }
+
+    // Validate email format using inbuilt function
+    if (!filter_var($Email, FILTER_VALIDATE_EMAIL)) {
+        array_push($errors, "Invalid email format.");
+    }
+
+    // Validate password strength (as for now, it has to be longer than 4 characters and contain at least 1 digit)
+    if (strlen($Password) <= 4 || !preg_match("/[0-9]/", $Password)) {
+        array_push($errors, "Password must be longer than 4 characters and contain at least 1 digit.");
+    }
+
+    //Checking if the passwords entered in both fields are same or not
     if($Password != $PasswordAgain)
     {
         array_push($errors, "Passwords do not match.");
     }
 
-	//checking if the username is already taken
+	//Checking if the username is already taken
 	$user_check_query = "SELECT * FROM users WHERE Username='$UserName' LIMIT 1";
 	$result = mysqli_query($db, $user_check_query);
 	$user = mysqli_fetch_assoc($result);
-		if ($user["Username"] === $UserName) {
-			array_push($errors, "Username already exists.");
-		}
+    if ($user["Username"] === $UserName) {
+        array_push($errors, "Username already exists.");
+    }
 
-    //register the user if there are no errors
+
+
+    //Register the user if there are no errors
     if (count($errors) == 0) {
         //encrypting the password
         $PasswordHashed = password_hash($Password, PASSWORD_DEFAULT);
@@ -87,10 +115,10 @@ if (isset($_POST["submit"])) {
         $resultCenter = mysqli_query($db, $centerCodeQuery);
         $FavouriteCenterArray = mysqli_fetch_assoc($resultCenter);
         $FavouriteCenter = $FavouriteCenterArray["CenterCode"];
-        //finally registering the user
+        //Finally registering the user
         $query = "INSERT INTO Users (Username, Name, PasswordHash, RecCenterCode) VALUES ('$UserName', '$Name', '$PasswordHashed', '$FavouriteCenter')";
         mysqli_query($db, $query);
-        //checking if the user has been successfully registered by fetching in their details associated with the email
+        //Checking if the user has been successfully registered by fetching in their details associated with the email
         $query = "SELECT * FROM Users WHERE Username = '$UserName'";
 				$results = mysqli_query($db, $query);
                 $UserData = mysqli_fetch_assoc($results);
@@ -99,7 +127,7 @@ if (isset($_POST["submit"])) {
                 if ($UserData["IsAdmin"] == 1){
                     $_SESSION["IsAdmin"] = true;
                 }
-                //logging in and sending user to his qr page
+                //Logging in and sending user to his qr page
                 $_SESSION["UserLoggedIn"] = true;
                 $_SESSION["username"] = $UserName;
                 header('location: qr.php');

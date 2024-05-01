@@ -3,13 +3,13 @@
 function getRandomCenter($db) {
     $sql = "SELECT * FROM RecyclingCenter ORDER BY RAND() LIMIT 1";
     $result = mysqli_query($db, $sql);
-    return mysqli_fetch_assoc($result);
+    $RandomArr = mysqli_fetch_assoc($result);
+    return $RandomArr;
 }
 
 // Function to fetch user's favorite center from the database
-function getUserFavoriteCenter($db, $user_id) {
-    $sql = "SELECT favorite_center FROM RecyclingCenter WHERE id = '$user_id'";
+function getUserFavoriteCenter($db, $Username) {
+    $sql = "SELECT * FROM RecyclingCenter WHERE CenterCode = (SELECT RecCenterCode FROM Users WHERE Username ='$Username')";
     $result = mysqli_query($db, $sql);
-    $row = mysqli_fetch_assoc($result);
-    return $row['favorite_center'];
+    return mysqli_fetch_assoc($result);
 }

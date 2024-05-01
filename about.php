@@ -12,10 +12,10 @@ if (!$_SESSION["UserLoggedIn"]){
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" type="image/png" href="logo.png">
-    <title>QR</title>
+    <title>About</title>
 </head>
 <body>
 
-<h1>This is your QR</h1>
+<h1>This is your about authors</h1>
 </body>
 </html>
