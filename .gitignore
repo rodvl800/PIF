@@ -6,3 +6,4 @@
 .devcontainer/devcontainer.json
 RUN.txt
 dbconfig.php
+.DS_Store

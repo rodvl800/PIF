@@ -6,6 +6,7 @@ include 'functions.php';
 
 // Fetch random center details
 $random_center = getRandomCenter($db);
+$_SESSION["CenterName"] = $random_center['CenterName'];
 
 // If user is logged in, fetch user's favorite center
 if(isset($_SESSION['username'])) {

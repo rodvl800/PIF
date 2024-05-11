@@ -12,12 +12,13 @@
 <body>
 <?php
 include 'nav-bar.php';
+include 'functions.php';
 if ($_SESSION["UserLoggedIn"]) {
     header('location: qr.php');
 }
 ?>
 
-<H1>Here you can Sign In</H1>
+<h1>Here you can Sign In</h1>
 <form method="POST" class="registration" id="registration-form">
 	<div>
 		<label for="Name">Name</label>
@@ -65,30 +66,39 @@ if (isset($_POST["submit"])) {
     $PasswordAgain = mysqli_real_escape_string($db, $_POST['PasswordAgain']);
     $Center = mysqli_real_escape_string($db, $_POST['Center']);
 
-    //Make sure required fields are filled in
+
+    // Make sure required fields are filled in
     if (empty($Name) || empty($UserName) || empty($Password) || empty($Email) || empty($Center)) {
         array_push($errors, "Fill in all the fields.");
     }
-
-    // Name can only contain letters.
-    if (!preg_match("/^[A-Za-z]+$/", $Name)) {
-        array_push($errors, "Name can only contain letters.");
+    else {
+        // Use reusable functions as this action is initiated multiple times on different pages
+        $errors = validateInput($Name, $UserName, $Password, $Email);
     }
 
-    // Username can only contain letters, numbers, and underscores
-    if (!preg_match("/^[a-zA-Z0-9_]+$/", $UserName)) {
-        array_push($errors, "Username can only contain letters, numbers, and underscores.");
-    }
 
-    // Validate email format using inbuilt function
-    if (!filter_var($Email, FILTER_VALIDATE_EMAIL)) {
-        array_push($errors, "Invalid email format.");
-    }
 
-    // Validate password strength (as for now, it has to be longer than 4 characters and contain at least 1 digit)
-    if (strlen($Password) <= 4 || !preg_match("/[0-9]/", $Password)) {
-        array_push($errors, "Password must be longer than 4 characters and contain at least 1 digit.");
-    }
+
+
+//
+//    // Name can only contain letters.
+//    if (!preg_match("/^[A-Za-z]+$/", $Name)) {
+//        array_push($errors, "Name can only contain letters.");
+//    }
+//    // Username can only contain letters, numbers, and underscores
+//    if (!preg_match("/^[a-zA-Z0-9_]+$/", $UserName)) {
+//        array_push($errors, "Username can only contain letters, numbers, and underscores.");
+//    }
+//
+//    // Validate email format using inbuilt function
+//    if (!filter_var($Email, FILTER_VALIDATE_EMAIL)) {
+//        array_push($errors, "Invalid email format.");
+//    }
+//
+//    // Validate password strength (as for now, it has to be longer than 4 characters and contain at least 1 digit)
+//    if (strlen($Password) <= 4 || !preg_match("/[0-9]/", $Password)) {
+//        array_push($errors, "Password must be longer than 4 characters and contain at least 1 digit.");
+//    }
 
     //Checking if the passwords entered in both fields are same or not
     if($Password != $PasswordAgain)
@@ -116,7 +126,7 @@ if (isset($_POST["submit"])) {
         $FavouriteCenterArray = mysqli_fetch_assoc($resultCenter);
         $FavouriteCenter = $FavouriteCenterArray["CenterCode"];
         //Finally registering the user
-        $query = "INSERT INTO Users (Username, Name, PasswordHash, RecCenterCode) VALUES ('$UserName', '$Name', '$PasswordHashed', '$FavouriteCenter')";
+        $query = "INSERT INTO Users (Username, Name, Email, PasswordHash, RecCenterCode) VALUES ('$UserName', '$Name', '$Email','$PasswordHashed', '$FavouriteCenter')";
         mysqli_query($db, $query);
         //Checking if the user has been successfully registered by fetching in their details associated with the email
         $query = "SELECT * FROM Users WHERE Username = '$UserName'";
@@ -132,11 +142,13 @@ if (isset($_POST["submit"])) {
                 $_SESSION["username"] = $UserName;
                 header('location: qr.php');
             }
-            else{
+            else {
                 array_push($errors, "Problem with database.");
             }
     }
 }
+
+// Show errors
 if (!empty($errors)): ?>
 
 <h3 style="color: red;">

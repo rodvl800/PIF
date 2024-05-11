@@ -1,8 +1,5 @@
 <?php
 include 'nav-bar.php';
-if (!$_SESSION["UserLoggedIn"]){
-    header('location: login.php');
-}
 ?>
 <!doctype html>
 <html lang="en">

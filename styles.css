@@ -28,6 +28,31 @@ main {
 }
 
 
+.user-details {
+	margin-bottom: 20px;
+}
+
+.user-details b {
+	display: inline-block;
+	/*width: 200px;*/
+	min-width: 250px;
+	text-align: center;
+}
+
+.user-details h3 button {
+	margin-left: 10px;
+}
+
+.center-details h2 {
+	font-size: 20px;
+	margin-bottom: 10px;
+}
+
+.center-details p {
+	margin: 5px 0;
+}
+
+
 .nav-links {
 	display: flex;
 	justify-content: space-around;
