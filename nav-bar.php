@@ -3,6 +3,8 @@
 require_once 'dbconfig.php'; // Database connection used everywhere after
 $_SESSION["UserLoggedIn"] = $_SESSION["UserLoggedIn"] ?? false;
 $_SESSION["isAdmin"] = $_SESSION["isAdmin"] ?? false;
+$_SESSION["username"] = $_SESSION["username"] ?? "";
+$_SESSION["CenterName"] = $_SESSION["CenterName"] ?? "";
 
 if (isset($_POST["Logout"])) {
     $_SESSION["UserLoggedIn"] = false;

@@ -28,6 +28,8 @@ main {
 }
 
 
+/* PROFILE PAGE */
+
 .user-details {
 	margin-bottom: 20px;
 }
@@ -43,6 +45,99 @@ main {
 	margin-left: 10px;
 }
 
+.form-container {
+	background: #fff;
+	padding: 20px 40px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	text-align: center;
+	max-width: 400px;
+	margin: auto;
+}
+.form-container h1 {
+	font-size: 24px;
+	margin-bottom: 20px;
+	color: #333;
+}
+.form-group {
+	margin-bottom: 15px;
+}
+.form-group label {
+	color: #45a049;
+	display: block;
+	margin-bottom: 10px;
+	font-weight: bold;
+	color: #333;
+}
+
+
+
+.form-group input[type="text"], .form-group input[type="password"] {
+	width: calc(100% - 100px);
+	padding: 8px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+	display: inline-block;
+}
+
+/* .form-group input[type="text"]:focus ~ .form-group input[type="submit"] {
+	display: none;
+}
+
+.form-group input[type="submit"] {
+	display: none;
+} */
+
+/* .form-group input[type="text"]:focus ~ input[type="submit"], .form-group input[type="password"]:focus ~ input[type="submit"] {
+    display: block;
+	background-color: #f0f0f0;
+	padding: 8px 16px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	display: inline-block;
+	margin-left: 10px;
+	margin-top: 5px;
+} */
+
+
+/* Initially disable the submit button */
+.form-group input[type="submit"] {
+    display: none;
+}
+
+/* Enable the submit button when the text or password input is not empty */
+.form-group input[type="text"]:not(:placeholder-shown) ~ input[type="submit"],
+.form-group input[type="password"]:not(:placeholder-shown) ~ input[type="submit"] {
+    display: inline-block;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+
+.form-group input[type="submit"]:hover {
+	background-color: rgb(65, 65, 151);
+	color: white;
+}
+
+.submit-button {
+	background-color: #f0f0f0;
+	padding: 8px 16px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	display: inline-block !important;
+	margin-left: 10px;
+	margin-top: 5px;
+}
+
+
+/* INDEX */
 .center-details h2 {
 	font-size: 20px;
 	margin-bottom: 10px;

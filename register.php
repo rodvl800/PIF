@@ -16,6 +16,7 @@ include 'functions.php';
 if ($_SESSION["UserLoggedIn"]) {
     header('location: qr.php');
 }
+$allCenters = getAllCenters($db);
 ?>
 
 <h1>Here you can Sign In</h1>
@@ -44,10 +45,10 @@ if ($_SESSION["UserLoggedIn"]) {
 	<div>
 		<label for="Center">Favorite Center</label>
 		<select name="Center" id="Center" required>
-			<option value="Luxembourg-City">Luxembourg-City</option>
-			<option value="Luxembourg-Gare">Luxembourg-Gare</option>
-			<option value="Esch">Esch</option>
-		</select>
+            <?php foreach($allCenters as $center): ?>
+                <option value="<?php echo $center; ?>"><?php echo $center; ?></option>
+            <?php endforeach; ?>
+        </select>
 	</div>
 	<div class="register-button">
 		<button type="submit" name="submit">Register
@@ -76,31 +77,7 @@ if (isset($_POST["submit"])) {
         $errors = validateInput($Name, $UserName, $Password, $Email);
     }
 
-
-
-
-
-//
-//    // Name can only contain letters.
-//    if (!preg_match("/^[A-Za-z]+$/", $Name)) {
-//        array_push($errors, "Name can only contain letters.");
-//    }
-//    // Username can only contain letters, numbers, and underscores
-//    if (!preg_match("/^[a-zA-Z0-9_]+$/", $UserName)) {
-//        array_push($errors, "Username can only contain letters, numbers, and underscores.");
-//    }
-//
-//    // Validate email format using inbuilt function
-//    if (!filter_var($Email, FILTER_VALIDATE_EMAIL)) {
-//        array_push($errors, "Invalid email format.");
-//    }
-//
-//    // Validate password strength (as for now, it has to be longer than 4 characters and contain at least 1 digit)
-//    if (strlen($Password) <= 4 || !preg_match("/[0-9]/", $Password)) {
-//        array_push($errors, "Password must be longer than 4 characters and contain at least 1 digit.");
-//    }
-
-    //Checking if the passwords entered in both fields are same or not
+    //Checking if the passwords in both fields are same or not
     if($Password != $PasswordAgain)
     {
         array_push($errors, "Passwords do not match.");
@@ -120,13 +97,13 @@ if (isset($_POST["submit"])) {
     if (count($errors) == 0) {
         //encrypting the password
         $PasswordHashed = password_hash($Password, PASSWORD_DEFAULT);
-        //Get center id by it's name selected by user.
+        //Get center id by its name selected by user.
         $centerCodeQuery = "SELECT CenterCode FROM RecyclingCenter WHERE CenterName='$Center' LIMIT 1";
         $resultCenter = mysqli_query($db, $centerCodeQuery);
-        $FavouriteCenterArray = mysqli_fetch_assoc($resultCenter);
-        $FavouriteCenter = $FavouriteCenterArray["CenterCode"];
+        $FavoriteCenterArray = mysqli_fetch_assoc($resultCenter);
+        $FavoriteCenter = $FavoriteCenterArray["CenterCode"];
         //Finally registering the user
-        $query = "INSERT INTO Users (Username, Name, Email, PasswordHash, RecCenterCode) VALUES ('$UserName', '$Name', '$Email','$PasswordHashed', '$FavouriteCenter')";
+        $query = "INSERT INTO Users (Username, Name, Email, PasswordHash, RecCenterCode) VALUES ('$UserName', '$Name', '$Email','$PasswordHashed', '$FavoriteCenter')";
         mysqli_query($db, $query);
         //Checking if the user has been successfully registered by fetching in their details associated with the email
         $query = "SELECT * FROM Users WHERE Username = '$UserName'";

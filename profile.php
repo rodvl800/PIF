@@ -18,62 +18,97 @@ if (!$_SESSION["UserLoggedIn"]){
 <body>
 <?php
     $userData =getUserData($db, $_SESSION["username"]);
+    $allCenters = getAllCenters($db);
 ?>
 <main>
-<h1>Here you can see and change your data, <?php echo $_SESSION["username"]?></h1>
-
-    <div class="user-details">
-        <h3><b>Current name: </b><?php echo $userData['Name'];?> <button type="submit" name="changeName">Change</h3>
-        <h3><b>Current username: </b><?php echo $userData['Username'];?> <button type="submit" name="changeUsername">Change</h3></h3>
-        <h3><b>Current email: </b><?php echo $userData['Email'];?> <button type="submit" name="changeEmail">Change</h3></h3>
-        <h3><b>Current password: </b>******** <button type="submit" name="changePassword">Change</h3></h3>
-        <h3><b>Current favorite center: </b><?php echo $_SESSION["CenterName"]?> <button type="submit" name="changeCenter">Change</h3></h3>
+    <div class="form-container">
+    <h1>Here you can see and change your data, <?php echo $_SESSION["username"]?></h1>
+    <form method="post">
+    <div class="form-group">
+        <label for="name">Current name: <?php echo $userData['Name'];?></label>
+        <input type="text" name="newName" placeholder="Change your name" >
+        <input type="submit" value="Change" name="changeName">
     </div>
+    <div class="form-group">
+        <label for="username">Current username: <?php echo $userData['Username'];?></label>
+        <input type="text" name="newUsername" placeholder="Change your username" >
+        <input type="submit" value="Change" name="changeUsername">
+    </div>
+    <div class="form-group">
+        <label for="email">Current email: <?php echo $userData['Email'];?></label>
+        <input type="text" name="newEmail" placeholder="Change your email" >
+        <input type="submit" value="Change" name="changeEmail">
+    </div>
+    <div class="form-group">
+        <label for="password">Current password: ****</label>
+        <input type="password" name="newPassword" placeholder="Change your password" >
+        <input type="submit" value="Change" name="changePassword">
+    </div>
+    <div class="form-group">
+        <label for="center">Current favorite center: <?php echo $_SESSION["CenterName"]?></label>
 
+        <div>
+            <select name="newCenter" id="Center" required>
+                <?php foreach($allCenters as $center): ?>
+                    <option placeholder="Change your center" value="<?php echo $center; ?>"><?php echo $center; ?></option>
+                <?php endforeach; ?>
+            </select>
+	    </div>
+        <input type="submit" value="Change" name="changeCenter" class="submit-button">
+    </div>
+    </form>
+</div>
+
+
+
+    
     <?php
-    function SendQuerry() {
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($_POST['changeName'])) {
+            $typeData = "Name";
+            $typeInput = "newName";
+            $newData = $_POST['newName'];
+        }
+        if (isset($_POST['changeUsername'])) {
+            $typeData = "Username";
+            $typeInput = "newUsername";
+            $newData = $_POST['newUsername'];
+        }
+        if (isset($_POST['changeEmail'])) {
+            $typeData = "Email";
+            $typeInput = "newEmail";
+            $newData = $_POST['newEmail'];
+        }
+        if (isset($_POST['changePassword'])) {
+            $typeData = "PasswordHash";
+            $typeInput = "newPassword";
+            $newData = password_hash($_POST['newPassword'], PASSWORD_DEFAULT);
+        }
+        if (isset($_POST['changeCenter'])) {
+            $typeData = "RecCenterCode";
+            $typeInput = "newCenter";
+            $newCenterName = $_POST['newCenter'];
+            //This function is used to get the center code from the center name
+            $centerEdit = getCenter($db, $newCenterName);
+            $newData = $centerEdit['CenterCode'];
+            $_SESSION["CenterName"] = $newCenterName;
+        }
+        SendQuery($db, $userData, $typeData, $newData);
+        header("Refresh:0");
+    }
+
+    function SendQuery($db, &$userData, $typeData, $newData){
+        $sql = "UPDATE Users SET $typeData = '$newData' WHERE Username = '$_SESSION[username]'";
+        if ($typeData == "Username"){
+            $_SESSION["username"] = $newData;
+            $userData =getUserData($db, $_SESSION["username"]);
+        }
+        var_dump($sql);
+        echo "<br>";
+        mysqli_query($db, $sql);
 
     }
     ?>
-
-
-
-
-<!--<form method="POST" class="registration" id="registration-form">-->
-<!--    <div>-->
-<!--        <label for="Name">Name</label>-->
-<!--        <input type="text" name="Name" id="Name" required>-->
-<!--    </div>-->
-<!--    <div>-->
-<!---->
-<!--        <label for="UserName">Username</label>-->
-<!--        <input type="text" name="UserName" id="UserName" required>-->
-<!--    </div>-->
-<!--    <div>-->
-<!--        <label for="Email">Email</label>-->
-<!--        <input type="text" name="Email" id="Email" required>-->
-<!--    </div>-->
-<!--    <div>-->
-<!--        <label for="Password">Password</label>-->
-<!--        <input type="password" name="Password" id="Password" required>-->
-<!--    </div>-->
-<!--    <div>-->
-<!--        <label for="PasswordAgain">Repeat Password</label>-->
-<!--        <input type="password" name="PasswordAgain" id="PasswordAgain" required>-->
-<!--    </div>-->
-<!--    <div>-->
-<!--        <label for="Center">Favorite Center</label>-->
-<!--        <select name="Center" id="Center" required>-->
-<!--            <option value="Luxembourg-City">Luxembourg-City</option>-->
-<!--            <option value="Luxembourg-Gare">Luxembourg-Gare</option>-->
-<!--            <option value="Esch">Esch</option>-->
-<!--        </select>-->
-<!--    </div>-->
-<!--    <div class="register-button">-->
-<!--        <button type="submit" name="submit">Change-->
-<!--    </div>-->
-<!--    <p class="error-message" id="error-message"></p>-->
-<!--</form>-->
 
 
 

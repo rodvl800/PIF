@@ -1,4 +1,22 @@
 <?php
+//Function to fetch all centers names from the database
+function getAllCenters($db) {
+    $sql = "SELECT * FROM RecyclingCenter";
+    $result = mysqli_query($db, $sql);
+    $allCenters = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $allCenters[] = $row["CenterName"];
+    }
+    return $allCenters;
+}
+
+// Function to fetch a specific center from the database
+function getCenter($db, $centerName) {
+    $sql = "SELECT * FROM RecyclingCenter WHERE CenterName = '$centerName'";
+    $result = mysqli_query($db, $sql);
+    return mysqli_fetch_assoc($result);
+}
+
 // Function to fetch a random center from the database
 function getRandomCenter($db) {
     $sql = "SELECT * FROM RecyclingCenter ORDER BY RAND() LIMIT 1";
