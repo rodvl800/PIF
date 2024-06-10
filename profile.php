@@ -63,38 +63,55 @@ if (!$_SESSION["UserLoggedIn"]){
 
     
     <?php
+    $errors = array(); //Array to push and display errors to the user
+    
+    
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (isset($_POST['changeName'])) {
-            $typeData = "Name";
-            $typeInput = "newName";
-            $newData = $_POST['newName'];
+
+        $Name = mysqli_real_escape_string($db, $_POST['newName']);
+        $UserName = mysqli_real_escape_string($db, $_POST['newUsername']);
+        $Email = mysqli_real_escape_string($db, $_POST['newEmail']);
+        $Password = mysqli_real_escape_string($db, $_POST['newPassword']);
+    
+    
+            // Use reusable functions as this action is initiated multiple times on different pages
+            $errors = validateInput($Name, $UserName, $Password, $Email);
+    
+    
+        if (count($errors) == 0) {
+            if (isset($_POST['changeName'])) {
+                $typeData = "Name";
+                $typeInput = "newName";
+                $newData = $_POST['newName'];
+            }
+            if (isset($_POST['changeUsername'])) {
+                $typeData = "Username";
+                $typeInput = "newUsername";
+                $newData = $_POST['newUsername'];
+            }
+            if (isset($_POST['changeEmail'])) {
+                $typeData = "Email";
+                $typeInput = "newEmail";
+                $newData = $_POST['newEmail'];
+            }
+            if (isset($_POST['changePassword'])) {
+                $typeData = "PasswordHash";
+                $typeInput = "newPassword";
+                $newData = password_hash($_POST['newPassword'], PASSWORD_DEFAULT);
+            }
+            if (isset($_POST['changeCenter'])) {
+                $typeData = "RecCenterCode";
+                $typeInput = "newCenter";
+                $newCenterName = $_POST['newCenter'];
+                //This function is used to get the center code from the center name
+                $centerEdit = getCenter($db, $newCenterName);
+                $newData = $centerEdit['CenterCode'];
+                $_SESSION["CenterName"] = $newCenterName;
+            }
+            SendQuery($db, $userData, $typeData, $newData);
+            header("Refresh:0");
         }
-        if (isset($_POST['changeUsername'])) {
-            $typeData = "Username";
-            $typeInput = "newUsername";
-            $newData = $_POST['newUsername'];
-        }
-        if (isset($_POST['changeEmail'])) {
-            $typeData = "Email";
-            $typeInput = "newEmail";
-            $newData = $_POST['newEmail'];
-        }
-        if (isset($_POST['changePassword'])) {
-            $typeData = "PasswordHash";
-            $typeInput = "newPassword";
-            $newData = password_hash($_POST['newPassword'], PASSWORD_DEFAULT);
-        }
-        if (isset($_POST['changeCenter'])) {
-            $typeData = "RecCenterCode";
-            $typeInput = "newCenter";
-            $newCenterName = $_POST['newCenter'];
-            //This function is used to get the center code from the center name
-            $centerEdit = getCenter($db, $newCenterName);
-            $newData = $centerEdit['CenterCode'];
-            $_SESSION["CenterName"] = $newCenterName;
-        }
-        SendQuery($db, $userData, $typeData, $newData);
-        header("Refresh:0");
     }
 
     function SendQuery($db, &$userData, $typeData, $newData){
@@ -103,7 +120,6 @@ if (!$_SESSION["UserLoggedIn"]){
             $_SESSION["username"] = $newData;
             $userData =getUserData($db, $_SESSION["username"]);
         }
-        var_dump($sql);
         echo "<br>";
         mysqli_query($db, $sql);
 
@@ -113,32 +129,8 @@ if (!$_SESSION["UserLoggedIn"]){
 
 
 <?php
-$errors = array(); //Array to push and display errors to the user
 if (isset($_POST["submit"])) {
-    $Name = mysqli_real_escape_string($db, $_POST['Name']);
-    $UserName = mysqli_real_escape_string($db, $_POST['UserName']);
-    $Email = mysqli_real_escape_string($db, $_POST['Email']);
-    $Password = mysqli_real_escape_string($db, $_POST['Password']);
-    $PasswordAgain = mysqli_real_escape_string($db, $_POST['PasswordAgain']);
-    $Center = mysqli_real_escape_string($db, $_POST['Center']);
 
-
-    if (empty($Name) || empty($UserName) || empty($Password) || empty($Email) || empty($Center)) {
-        array_push($errors, "Fill in all the fields.");
-    } else {
-        // Use reusable functions as this action is initiated multiple times on different pages
-        $errors = validateInput($Name, $UserName, $Password, $Email);
-
-        //Checking if the passwords entered in both fields are same or not
-        if ($Password != $PasswordAgain) {
-            array_push($errors, "Passwords do not match.");
-        }
-    }
-
-    if (count($errors) == 0) {
-
-
-    }
 }
 
 // Show errors

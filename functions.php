@@ -43,7 +43,6 @@ function getUserData($db, $username) {
 
 function validateInput($Name, $UserName, $Password, $Email) {
     $errors = [];
-    var_dump($Name, $UserName, $Password, $Email);
     // Name can only contain letters.
     if (!preg_match("/^[A-Za-z]+$/", $Name)) {
         array_push($errors, "Name can only contain letters.");
