@@ -23,7 +23,7 @@ if (isset($_POST["Logout"])) {
     <ul class="nav-links">
 
             <li><a href="index.php">Home</a></li>
-            <li><a href="about.php">About authors</a></li>
+            <li><a href="about.php">About</a></li>
 
             <?php
             if ($_SESSION["UserLoggedIn"]) {?>

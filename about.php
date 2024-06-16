@@ -12,7 +12,12 @@ include 'nav-bar.php';
     <title>About</title>
 </head>
 <body>
-
-<h1>This is your about authors</h1>
+<main>
+    <h1 class="about-header">About LPEM Recycling Centers</h1>
+    <p class="about-text">At LPEM Recycling Centers, we are dedicated to transforming waste into valuable resources for a sustainable future.</p>
+    <p>Since 2021 we are working seamlessly to satisfy all our customers.</p>
+    <p>For additional information, please contact us directly.</p>
+    <img src="about.jpg" alt="logo" class="about-logo">
+</main>
 </body>
 </html>

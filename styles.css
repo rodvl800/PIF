@@ -63,11 +63,10 @@ main {
 	margin-bottom: 15px;
 }
 .form-group label {
-	color: #45a049;
+	color: #333;
 	display: block;
 	margin-bottom: 10px;
 	font-weight: bold;
-	color: #333;
 }
 
 
@@ -80,27 +79,6 @@ main {
 	box-sizing: border-box;
 	display: inline-block;
 }
-
-/* .form-group input[type="text"]:focus ~ .form-group input[type="submit"] {
-	display: none;
-}
-
-.form-group input[type="submit"] {
-	display: none;
-} */
-
-/* .form-group input[type="text"]:focus ~ input[type="submit"], .form-group input[type="password"]:focus ~ input[type="submit"] {
-    display: block;
-	background-color: #f0f0f0;
-	padding: 8px 16px;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-	display: inline-block;
-	margin-left: 10px;
-	margin-top: 5px;
-} */
-
 
 /* Initially disable the submit button */
 .form-group input[type="submit"] {
@@ -201,4 +179,8 @@ main {
 
 .register-button {
 	padding-left: 135px;
+}
+
+.about-logo {
+	width: 800px;
 }
