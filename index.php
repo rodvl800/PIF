@@ -2,6 +2,7 @@
 // Include nav-bar connection and functions
 include 'nav-bar.php';
 include 'functions.php';
+active(1);
 
 
 // Fetch random center details

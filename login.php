@@ -12,6 +12,7 @@
 <body>
 <?php
 include 'nav-bar.php';
+active(6);
 $errors_login = array();
 
 if (isset($_SESSION["UserLoggedIn"])) {

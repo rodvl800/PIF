@@ -12,6 +12,7 @@
 <body>
 <?php
 include 'nav-bar.php';
+active(7);
 include 'functions.php';
 if ($_SESSION["UserLoggedIn"]) {
     header('location: qr.php');

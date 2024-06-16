@@ -1,5 +1,6 @@
 <?php
 include 'nav-bar.php';
+active(2);
 ?>
 <!doctype html>
 <html lang="en">

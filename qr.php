@@ -1,5 +1,6 @@
 <?php
 include 'nav-bar.php';
+active(3);
 require_once 'phpqrcode/qrlib.php';
 if (!$_SESSION["UserLoggedIn"]){
     header('location: login.php');

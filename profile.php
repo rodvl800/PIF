@@ -1,5 +1,6 @@
 <?php
 include 'nav-bar.php';
+active(4);
 include 'functions.php';
 if (!$_SESSION["UserLoggedIn"]){
     header('location: login.php');
