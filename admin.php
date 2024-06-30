@@ -1,22 +1,51 @@
 <?php
 include 'nav-bar.php';
 active(5);
-if (!$_SESSION["UserLoggedIn"]){
+if (!$_SESSION["UserLoggedIn"]) {
     header('location: login.php');
 }
+
+
+$sql = "SELECT id, measurement, value, timestamp FROM Measurement";
+$sql = "SELECT * FROM RecyclingCenter WHERE CenterName = '$centerName'";
+$result = mysqli_query($db, $sql);
+$data = mysqli_fetch_assoc($result);
 ?>
-<!doctype html>
-<html lang="en">
+<!-- 
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="icon" type="image/png" href="logo.png">
-    <title>Admin</title>
+    <title>Admin Page</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
 
-<h1>This is Admin</h1>
+<h2>Measurement Data</h2>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Measurement</th>
+        <th>Value</th>
+        <th>Timestamp</th>
+        <th>Actions</th>
+    </tr>
+
+</table>
+
+<a href="add.php">Add New Measurement</a>
+
 </body>
-</html>
+</html> -->

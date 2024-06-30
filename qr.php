@@ -52,6 +52,20 @@ $db->close();
 <html>
 <head>
     <title>QR Code Generation</title>
+<style>
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+tr:nth-child(even) {background-color: #f2f2f2;}
+</style>
 </head>
 <body>
 <main>
@@ -59,6 +73,25 @@ $db->close();
     <img src="temp/<?php echo $fileName; ?>" alt="QR Code">
     <form method="post" action="qr.php">
         <button type="submit">Regenerate QR Code</button>
+    </form>
+
+    <h1>Existing measurements:</h1>
+
+    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post"> Show 
+  <select name="num_rows">
+    <option value="10">10</option>
+    <option value="20">20</option>
+    <option value="100">100</option>
+    </select>
+    rows
+  <button type="submit">Show</button>
+</form>
+
+
+    <?php include 'measurements.php';?>
+    <br>
+    <form method="post" action="qr.php">
+        <button type="submit">Refresh measurements</button>
     </form>
     </main>    
 </body>
