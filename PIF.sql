@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 27, 2024 at 10:54 PM
+-- Generation Time: Jul 01, 2024 at 11:45 PM
 -- Server version: 10.4.28-MariaDB
--- PHP Version: 8.0.28
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -36,6 +36,13 @@ CREATE TABLE `Invoice` (
   `isPaid` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `Invoice`
+--
+
+INSERT INTO `Invoice` (`InvoiceID`, `InvoiceDate`, `InvoiceUsername`, `InvoiceCenterCode`, `Amount`, `isPaid`) VALUES
+(1, '2024-06-14', '2', 'RCESH', 10.5, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -51,6 +58,14 @@ CREATE TABLE `Measurement` (
   `Type` varchar(255) NOT NULL,
   `Username` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `Measurement`
+--
+
+INSERT INTO `Measurement` (`id`, `Weight(kg)`, `Date`, `idInvoice`, `StationID`, `Type`, `Username`) VALUES
+(1, 1, '2024-06-14', 1, 1, 'Wood', '3'),
+(2, 2, '2024-06-14', 1, 1, 'Wood', '3');
 
 -- --------------------------------------------------------
 
@@ -89,6 +104,13 @@ CREATE TABLE `Station` (
   `CenterCode` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `Station`
+--
+
+INSERT INTO `Station` (`StationID`, `Description`, `CenterCode`) VALUES
+(1, 'This is station number 1', 'RCESH');
+
 -- --------------------------------------------------------
 
 --
@@ -98,8 +120,10 @@ CREATE TABLE `Station` (
 CREATE TABLE `Users` (
   `Username` varchar(255) NOT NULL,
   `Name` varchar(255) NOT NULL,
+  `Email` varchar(255) DEFAULT NULL,
   `IsAdmin` tinyint(1) NOT NULL DEFAULT 0,
   `RandomCode` varchar(255) DEFAULT NULL,
+  `Qr_code` varchar(20) NOT NULL,
   `PasswordHash` varchar(255) NOT NULL,
   `RecCenterCode` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -108,9 +132,9 @@ CREATE TABLE `Users` (
 -- Dumping data for table `Users`
 --
 
-INSERT INTO `Users` (`Username`, `Name`, `IsAdmin`, `RandomCode`, `PasswordHash`, `RecCenterCode`) VALUES
-('2', '2', 0, NULL, '$2y$10$xwFlPCLCZQKJTzGoh4MeV.fXOwaVQ2lFaTH0811iKiQz9YcYjQlrC', 'RCLUX'),
-('3', '3', 0, NULL, '$2y$10$tm.wftCxjuvc84smvLA4GuNAOeElLZH1mVkHjW7F7naha6xg4XQsa', 'RCLUX');
+INSERT INTO `Users` (`Username`, `Name`, `Email`, `IsAdmin`, `RandomCode`, `Qr_code`, `PasswordHash`, `RecCenterCode`) VALUES
+('2', '2', ' 2@2.com', 1, '34463405', 'user_2.png', '$2y$10$xwFlPCLCZQKJTzGoh4MeV.fXOwaVQ2lFaTH0811iKiQz9YcYjQlrC', 'RCGAR'),
+('3', '3', '3@3.com', 0, '87978935', 'user_3.png', '$2y$10$tm.wftCxjuvc84smvLA4GuNAOeElLZH1mVkHjW7F7naha6xg4XQsa', 'RCGAR');
 
 -- --------------------------------------------------------
 
@@ -121,8 +145,16 @@ INSERT INTO `Users` (`Username`, `Name`, `IsAdmin`, `RandomCode`, `PasswordHash`
 CREATE TABLE `Waste` (
   `Type` varchar(255) NOT NULL,
   `Describtion` varchar(255) NOT NULL,
-  `Price` float(2,2) NOT NULL
+  `Price` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `Waste`
+--
+
+INSERT INTO `Waste` (`Type`, `Describtion`, `Price`) VALUES
+('Plastic', 'This is Plastic', 0.2),
+('Wood', 'This is wood', 2.5);
 
 --
 -- Indexes for dumped tables
@@ -180,19 +212,19 @@ ALTER TABLE `Waste`
 -- AUTO_INCREMENT for table `Invoice`
 --
 ALTER TABLE `Invoice`
-  MODIFY `InvoiceID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `InvoiceID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `Measurement`
 --
 ALTER TABLE `Measurement`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `Station`
 --
 ALTER TABLE `Station`
-  MODIFY `StationID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `StationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
