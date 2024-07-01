@@ -37,7 +37,8 @@ function active($activePage)
         else print("inactive"); ?>" href="qr.php?page=qr">Qr</a></li>
                 <li><a class="<?php if ($activePage == 4) print ("active");
         else print("inactive"); ?>" href="profile.php">Profile</a></li>
-
+                <li><a class="<?php if ($activePage == 8) print ("active");
+        else print("inactive"); ?>" href="billing.php?page=billing">Billing</a></li>
                 <?php if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin']){ ?>
                     <li><a class="<?php if ($activePage == 5) print ("active");
         else print("inactive"); ?>" href="admin.php">Admin</a></li>

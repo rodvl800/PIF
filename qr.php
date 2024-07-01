@@ -74,9 +74,8 @@ tr:nth-child(even) {background-color: #f2f2f2;}
     <form method="post" action="qr.php">
         <button type="submit">Regenerate QR Code</button>
     </form>
-
+    
     <h1>Existing measurements:</h1>
-
     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post"> Show 
   <select name="num_rows">
     <option value="10">10</option>
@@ -84,15 +83,9 @@ tr:nth-child(even) {background-color: #f2f2f2;}
     <option value="100">100</option>
     </select>
     rows
-  <button type="submit">Show</button>
+  <button type="submit">Refresh</button>
 </form>
-
-
     <?php include 'measurements.php';?>
-    <br>
-    <form method="post" action="qr.php">
-        <button type="submit">Refresh measurements</button>
-    </form>
     </main>    
 </body>
 </html>
